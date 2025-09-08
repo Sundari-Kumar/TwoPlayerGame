@@ -14,10 +14,9 @@ public class InteractiveGame {
         boolean gameOver = false;
         
         while (!gameOver) {
-            // Computer's turn (Player 1 - knows winning strategy)
             System.out.println("Current total: " + total);
             System.out.print("Press Enter for computer's move...");
-            scanner.nextLine(); // Wait for user to press Enter
+            scanner.nextLine(); 
             
             int computerMove = getOptimalMove(total);
             total += computerMove;
@@ -30,22 +29,21 @@ public class InteractiveGame {
                 break;
             }
             
-            // Human's turn (Player 2 - doesn't know strategy)
             System.out.println("\nCurrent total: " + total);
             System.out.print("Your turn! Add 2, 3, or 4: ");
             
             try {
                 int humanMove = scanner.nextInt();
-                scanner.nextLine(); // Consume the newline
+                scanner.nextLine(); 
                 
-                // Validate move
+               
                 if (humanMove < 2 || humanMove > 4) {
-                    System.out.println("❌ Invalid! Must add 2, 3, or 4. Try again.");
+                    System.out.println(" Invalid! Must add 2, 3, or 4. Try again.");
                     continue;
                 }
                 
                 if (total + humanMove > 40) {
-                    System.out.println("❌ That would go over 40! Try a smaller number.");
+                    System.out.println(" That would go over 40! Try a smaller number.");
                     continue;
                 }
                 
@@ -60,14 +58,14 @@ public class InteractiveGame {
                 }
                 
             } catch (Exception e) {
-                System.out.println("❌ Please enter a valid number (2, 3, or 4)");
-                scanner.nextLine(); // Clear invalid input
+                System.out.println(" Please enter a valid number (2, 3, or 4)");
+                scanner.nextLine(); 
             }
             
-            System.out.println(); // Empty line for readability
+            System.out.println(); 
         }
         
-        // Reveal the strategy
+       
         System.out.println("\n=== THE SECRET STRATEGY ===");
         System.out.println("The computer always tries to leave totals at:");
         System.out.println("1, 6, 11, 16, 21, 26, 31, 36 (pattern: 5k+1)");
@@ -77,28 +75,23 @@ public class InteractiveGame {
         scanner.close();
     }
     
-    // Computer uses optimal strategy
     static int getOptimalMove(int currentTotal) {
-        // Try each possible move to find one that puts opponent in losing position
         for (int move = 2; move <= 4; move++) {
             int newTotal = currentTotal + move;
             
-            // Win immediately if possible
             if (newTotal == 40) {
                 return move;
             }
             
-            // Put opponent in losing position (5k+1 pattern)
             if (newTotal < 40 && isLosingPosition(newTotal)) {
                 return move;
             }
         }
         
-        // Fallback (shouldn't happen with correct strategy)
+
         return 2;
     }
     
-    // Check if position is losing (follows 5k+1 pattern)
     static boolean isLosingPosition(int position) {
         return position % 5 == 1;
     }
